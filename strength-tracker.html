@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Strength + Aesthetics Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0a0a; color: #e8e8e0; font-family: 'DM Mono', 'Courier New', monospace; min-height: 100vh; padding-bottom: 80px; }
+
+  .header { background: #111; border-bottom: 1px solid #222; padding: 20px 20px 0; }
+  .header-sub { font-size: 11px; letter-spacing: 4px; color: #555; margin-bottom: 4px; text-transform: uppercase; }
+  .header-title { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 2px; line-height: 1; margin-bottom: 20px; }
+
+  .tabs { display: flex; gap: 2px; }
+  .tab { background: transparent; color: #555; border: none; padding: 10px 16px; font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; cursor: pointer; border-radius: 4px 4px 0 0; transition: all 0.15s; white-space: nowrap; }
+  .tab.active { color: #0a0a0a; }
+
+  .status-bar { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; background: #0d0d0d; border-bottom: 1px solid #1a1a1a; font-size: 11px; letter-spacing: 2px; }
+  .sync-status { display: flex; align-items: center; gap: 8px; color: #555; }
+  .sync-dot { width: 6px; height: 6px; border-radius: 50%; background: #555; flex-shrink: 0; }
+  .sync-dot.ok { background: #2ae87a; }
+  .sync-dot.syncing { background: #f0c040; animation: pulse 1s infinite; }
+  .sync-dot.error { background: #e8572a; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .settings-btn { background: none; border: 1px solid #2a2a2a; color: #555; padding: 5px 12px; border-radius: 3px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; cursor: pointer; white-space: nowrap; }
+  .settings-btn:active { background: #1a1a1a; }
+
+  .body { padding: 24px 20px 0; }
+  .day-label { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+  .day-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .day-subtitle { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #888; }
+
+  .exercises { display: flex; flex-direction: column; gap: 12px; }
+  .card { background: #111; border-radius: 4px; padding: 16px; border: 1px solid #1a1a1a; }
+  .card.main { border-left: 3px solid var(--day-color); border-color: #222; }
+  .card.accessory { border-left: 3px solid #2a2a2a; }
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+  .card-name { font-size: 15px; font-weight: 500; letter-spacing: 0.5px; }
+  .card-meta { font-size: 11px; color: #555; margin-top: 2px; letter-spacing: 2px; }
+  .card-stats { display: flex; gap: 12px; align-items: center; }
+  .stat { text-align: right; }
+  .stat-label { font-size: 9px; letter-spacing: 2px; color: #555; }
+  .stat-value { font-size: 14px; }
+  .stat-value.pr { color: #f0c040; }
+  .stat-value.last { color: #888; }
+
+  .input-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .input-label { font-size: 11px; color: #555; letter-spacing: 1px; white-space: nowrap; }
+  .weight-input { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 3px; color: #e8e8e0; font-family: 'DM Mono', monospace; font-size: 16px; padding: 8px 12px; width: 90px; outline: none; -moz-appearance: textfield; }
+  .weight-input::-webkit-outer-spin-button, .weight-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .weight-input:focus { border-color: #444; }
+  .next-target { font-size: 11px; color: #555; letter-spacing: 1px; margin-top: 8px; }
+  .next-val { color: var(--day-color); }
+
+  .ex-unit-toggle { display: flex; background: #1a1a1a; border-radius: 3px; overflow: hidden; border: 1px solid #2a2a2a; }
+  .ex-unit-opt { padding: 4px 10px; font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 1px; cursor: pointer; border: none; background: transparent; color: #555; transition: all 0.15s; }
+  .ex-unit-opt.active { background: var(--day-color); color: #0a0a0a; }
+
+  .save-btn { margin-top: 24px; width: 100%; background: var(--day-color); color: #0a0a0a; border: none; border-radius: 4px; padding: 16px; font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 3px; cursor: pointer; transition: all 0.2s; }
+  .save-btn:active { filter: brightness(0.9); transform: scale(0.99); }
+  .save-btn.saved { background: #2ae87a; }
+  .save-btn.error { background: #e8572a; }
+
+  .history-section { margin-top: 32px; }
+  .history-title { font-size: 11px; letter-spacing: 4px; color: #444; margin-bottom: 16px; text-transform: uppercase; }
+  .history-item { margin-bottom: 16px; }
+  .history-name { font-size: 12px; color: #666; margin-bottom: 8px; letter-spacing: 1px; }
+  .history-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { background: #111; border: 1px solid #1a1a1a; border-radius: 3px; padding: 6px 10px; font-size: 12px; }
+  .chip-weight { color: #e8e8e0; }
+  .chip-date { color: #444; margin-left: 4px; }
+
+  .day-panel { display: none; }
+  .day-panel.active { display: block; }
+
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 100; align-items: flex-start; justify-content: center; padding: 32px 20px 60px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #111; border: 1px solid #2a2a2a; border-radius: 8px; width: 100%; max-width: 480px; padding: 24px; }
+  .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 2px; margin-bottom: 4px; }
+  .modal-sub { font-size: 11px; color: #666; letter-spacing: 1px; margin-bottom: 20px; line-height: 1.7; }
+  .field-label { font-size: 10px; letter-spacing: 3px; color: #555; text-transform: uppercase; margin-bottom: 6px; margin-top: 16px; }
+  .field-input { width: 100%; background: #0a0a0a; border: 1px solid #2a2a2a; border-radius: 3px; color: #e8e8e0; font-family: 'DM Mono', monospace; font-size: 14px; padding: 10px 12px; outline: none; }
+  .field-input:focus { border-color: #555; }
+  .field-hint { font-size: 10px; color: #444; margin-top: 5px; letter-spacing: 0.5px; line-height: 1.6; }
+  .field-hint a { color: #2a7be8; }
+  .divider { border: none; border-top: 1px solid #1a1a1a; margin: 20px 0; }
+  .modal-btns { display: flex; gap: 8px; margin-top: 20px; }
+  .modal-btn { flex: 1; padding: 13px; border: none; border-radius: 4px; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; cursor: pointer; }
+  .modal-btn.confirm { background: #2ae87a; color: #0a0a0a; }
+  .modal-btn.cancel { background: #1a1a1a; color: #888; }
+  .modal-btn.danger { background: transparent; color: #e8572a; border: 1px solid #e8572a; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-sub">Strength + Aesthetics</div>
+  <div class="header-title">YOUR PROGRAM</div>
+  <div class="tabs" id="tabs"></div>
+</div>
+
+<div class="status-bar">
+  <div class="sync-status">
+    <div class="sync-dot" id="sync-dot"></div>
+    <span id="sync-label">Not connected</span>
+  </div>
+  <button class="settings-btn" onclick="openSettings()">&#9881; GITHUB</button>
+</div>
+
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal">
+    <div class="modal-title">GitHub Sync</div>
+    <div class="modal-sub">Your workout data saves as a JSON file in your GitHub repo — accessible from any device, any browser, forever.</div>
+
+    <div class="field-label">GitHub Username</div>
+    <input class="field-input" id="gh-username" placeholder="e.g. johndoe" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+
+    <div class="field-label">Repository Name</div>
+    <input class="field-input" id="gh-repo" placeholder="e.g. gym-tracker" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+    <div class="field-hint">Create a new repo on github.com first (can be private).</div>
+
+    <div class="field-label">Personal Access Token</div>
+    <input class="field-input" id="gh-token" type="password" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off" spellcheck="false">
+    <div class="field-hint">
+      GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token (classic). Check the <strong>repo</strong> scope. Copy and paste here.
+    </div>
+
+    <hr class="divider">
+
+    <div class="modal-btns">
+      <button class="modal-btn cancel" onclick="closeSettings()">CANCEL</button>
+      <button class="modal-btn confirm" onclick="saveSettings()">CONNECT</button>
+    </div>
+    <div class="modal-btns">
+      <button class="modal-btn danger" onclick="clearSettings()">DISCONNECT GITHUB</button>
+    </div>
+  </div>
+</div>
+
+<div id="panels"></div>
+
+<script>
+const PROGRAM = {
+  A: {
+    label: "Day A", day: "Monday", subtitle: "Push", color: "#e8572a",
+    exercises: [
+      { id: "chest_press",     name: "Chest Press Machine",    sets: 3, reps: 5,  type: "main" },
+      { id: "shoulder_press",  name: "Shoulder Press Machine", sets: 3, reps: 5,  type: "main" },
+      { id: "tricep_pushdown", name: "Cable Tricep Pushdown",  sets: 3, reps: 12, type: "accessory" },
+      { id: "lateral_raise",   name: "Cable Lateral Raise",    sets: 3, reps: 12, type: "accessory" },
+      { id: "chest_fly",       name: "Chest Fly Machine",      sets: 3, reps: 12, type: "accessory" },
+    ]
+  },
+  B: {
+    label: "Day B", day: "Wednesday", subtitle: "Pull + Legs", color: "#2a7be8",
+    exercises: [
+      { id: "leg_press",     name: "Leg Press",        sets: 3, reps: 5,  type: "main" },
+      { id: "seated_row",    name: "Seated Row",       sets: 3, reps: 5,  type: "main" },
+      { id: "lat_pulldown",  name: "Lat Pulldown",     sets: 3, reps: 5,  type: "main" },
+      { id: "leg_curl",      name: "Leg Curl",         sets: 3, reps: 10, type: "accessory" },
+      { id: "leg_extension", name: "Leg Extension",    sets: 3, reps: 12, type: "accessory" },
+      { id: "bicep_curl",    name: "Cable Bicep Curl", sets: 3, reps: 12, type: "accessory" },
+    ]
+  },
+  C: {
+    label: "Day C", day: "Friday", subtitle: "Full Body", color: "#2ae87a",
+    exercises: [
+      { id: "chest_press_c",    name: "Chest Press Machine",    sets: 3, reps: 5,  type: "main" },
+      { id: "leg_press_c",      name: "Leg Press",              sets: 3, reps: 5,  type: "main" },
+      { id: "seated_row_c",     name: "Seated Row",             sets: 3, reps: 5,  type: "main" },
+      { id: "shoulder_press_c", name: "Shoulder Press Machine", sets: 3, reps: 10, type: "accessory" },
+      { id: "rear_delt_fly",    name: "Cable Rear Delt Fly",    sets: 3, reps: 15, type: "accessory" },
+      { id: "ab_crunch",        name: "Ab Crunch Machine",      sets: 3, reps: 15, type: "accessory" },
+    ]
+  }
+};
+
+const LOCAL_KEY = "gym-tracker-v2";
+const GH_CONFIG_KEY = "gym-gh-config";
+const DATA_FILE = "gym-data.json";
+
+function loadLocal() { try { return JSON.parse(localStorage.getItem(LOCAL_KEY)) || {}; } catch { return {}; } }
+function saveLocal(d) { localStorage.setItem(LOCAL_KEY, JSON.stringify(d)); }
+function loadConfig() { try { return JSON.parse(localStorage.getItem(GH_CONFIG_KEY)) || null; } catch { return null; } }
+function saveConfig(c) { localStorage.setItem(GH_CONFIG_KEY, JSON.stringify(c)); }
+
+async function ghRequest(cfg, method, bodyObj) {
+  const url = `https://api.github.com/repos/${cfg.username}/${cfg.repo}/contents/${DATA_FILE}`;
+  const res = await fetch(url, {
+    method,
+    headers: { Authorization: `token ${cfg.token}`, "Content-Type": "application/json", Accept: "application/vnd.github.v3+json" },
+    body: bodyObj ? JSON.stringify(bodyObj) : undefined
+  });
+  return res;
+}
+
+async function ghLoad(cfg) {
+  const res = await ghRequest(cfg, "GET");
+  if (res.status === 404) return { data: {}, sha: null };
+  if (!res.ok) throw new Error("GitHub error " + res.status);
+  const j = await res.json();
+  return { data: JSON.parse(atob(j.content.replace(/\n/g, ""))), sha: j.sha };
+}
+
+async function ghSave(cfg, data, sha) {
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+  const res = await ghRequest(cfg, "PUT", {
+    message: "Gym update " + new Date().toISOString().slice(0, 10),
+    content,
+    ...(sha ? { sha } : {})
+  });
+  if (!res.ok) { const e = await res.json(); throw new Error(e.message || "Save failed"); }
+  const j = await res.json();
+  return j.content.sha;
+}
+
+let activeDay = "A";
+let gymData = loadLocal();
+let ghConfig = loadConfig();
+let ghSha = null;
+
+function setSyncUI(state, label) {
+  const dot = document.getElementById("sync-dot");
+  const lbl = document.getElementById("sync-label");
+  if (!dot || !lbl) return;
+  dot.className = "sync-dot" + (state ? " " + state : "");
+  lbl.textContent = label;
+}
+
+async function init() {
+  render();
+  if (!ghConfig) { setSyncUI("", "Not connected — tap ⚙ GITHUB"); return; }
+  setSyncUI("syncing", "Syncing...");
+  try {
+    const result = await ghLoad(ghConfig);
+    ghSha = result.sha;
+    if (Object.keys(result.data).length > 0) { gymData = result.data; saveLocal(gymData); }
+    setSyncUI("ok", "Synced with GitHub");
+    render();
+  } catch(e) {
+    setSyncUI("error", "Sync failed — using local data");
+  }
+}
+
+function openSettings() {
+  const cfg = loadConfig() || {};
+  document.getElementById("gh-username").value = cfg.username || "";
+  document.getElementById("gh-repo").value = cfg.repo || "";
+  document.getElementById("gh-token").value = cfg.token || "";
+  document.getElementById("settings-modal").classList.add("open");
+}
+function closeSettings() { document.getElementById("settings-modal").classList.remove("open"); }
+
+async function saveSettings() {
+  const username = document.getElementById("gh-username").value.trim();
+  const repo = document.getElementById("gh-repo").value.trim();
+  const token = document.getElementById("gh-token").value.trim();
+  if (!username || !repo || !token) { alert("Please fill in all three fields."); return; }
+  const cfg = { username, repo, token };
+  saveConfig(cfg); ghConfig = cfg;
+  closeSettings();
+  setSyncUI("syncing", "Connecting to GitHub...");
+  try {
+    const result = await ghLoad(cfg);
+    ghSha = result.sha;
+    if (Object.keys(result.data).length > 0) {
+      gymData = result.data; saveLocal(gymData); render();
+    } else {
+      ghSha = await ghSave(cfg, gymData, null);
+    }
+    setSyncUI("ok", "Connected to GitHub!");
+  } catch(e) {
+    setSyncUI("error", "Connection failed — check your token & repo name");
+  }
+}
+
+function clearSettings() {
+  if (!confirm("Disconnect GitHub? Local data stays.")) return;
+  localStorage.removeItem(GH_CONFIG_KEY);
+  ghConfig = null; ghSha = null;
+  closeSettings();
+  setSyncUI("", "Not connected — tap ⚙ GITHUB");
+}
+
+function render() { renderTabs(); renderPanels(); }
+
+function renderTabs() {
+  document.getElementById("tabs").innerHTML = Object.entries(PROGRAM).map(([key, d]) => `
+    <button class="tab ${key === activeDay ? "active" : ""}"
+      style="${key === activeDay ? "background:" + d.color : ""}"
+      onclick="switchDay('${key}')">
+      ${d.label} · ${d.day}
+    </button>
+  `).join("");
+}
+
+function renderPanels() {
+  document.getElementById("panels").innerHTML = Object.entries(PROGRAM).map(([key, d]) => `
+    <div class="day-panel ${key === activeDay ? "active" : ""}" style="--day-color:${d.color}">
+      <div class="body">
+        <div class="day-label">
+          <div class="day-dot" style="background:${d.color}"></div>
+          <span class="day-subtitle">${d.subtitle}</span>
+        </div>
+        <div class="exercises">${d.exercises.map(ex => renderCard(ex, d.color)).join("")}</div>
+        <button class="save-btn" id="save-btn-${key}" onclick="logSession('${key}')">LOG SESSION</button>
+        ${renderHistory(d)}
+      </div>
+    </div>
+  `).join("");
+}
+
+function getUnit(id) { return gymData[id]?.unit || "kg"; }
+
+function toggleUnit(id) {
+  if (!gymData[id]) gymData[id] = {};
+  gymData[id].unit = getUnit(id) === "kg" ? "lbs" : "kg";
+  saveLocal(gymData);
+  render();
+}
+
+function getPR(id) {
+  const cur = gymData[id]?.current;
+  const hist = (gymData[id]?.history || []).map(h => h.weight);
+  const all = [...hist, cur].filter(v => v != null);
+  return all.length ? Math.max(...all) : null;
+}
+
+function renderCard(ex, color) {
+  const cur = gymData[ex.id]?.current;
+  const pr = getPR(ex.id);
+  const unit = getUnit(ex.id);
+  const next = cur != null ? (parseFloat(cur) + (unit === "kg" ? 2.5 : 5)).toFixed(1) : null;
+  const isMain = ex.type === "main";
+  return `
+    <div class="card ${isMain ? "main" : "accessory"}" style="--day-color:${color}">
+      <div class="card-top">
+        <div>
+          <div class="card-name">${ex.name}</div>
+          <div class="card-meta">${ex.sets} &times; ${ex.reps} &middot; ${isMain ? "MAIN LIFT" : "ACCESSORY"}</div>
+        </div>
+        <div class="card-stats">
+          ${pr != null ? `<div class="stat"><div class="stat-label">PR</div><div class="stat-value pr">${pr} ${unit}</div></div>` : ""}
+          ${cur != null ? `<div class="stat"><div class="stat-label">LAST</div><div class="stat-value last">${cur} ${unit}</div></div>` : ""}
+        </div>
+      </div>
+      <div class="input-row">
+        <span class="input-label">TODAY</span>
+        <input class="weight-input" type="number" id="input-${ex.id}" value="${cur ?? ""}" placeholder="${cur ?? "0"}" inputmode="decimal">
+        <div class="ex-unit-toggle">
+          <button class="ex-unit-opt ${unit === "kg" ? "active" : ""}" onclick="toggleUnit('${ex.id}')">KG</button>
+          <button class="ex-unit-opt ${unit === "lbs" ? "active" : ""}" onclick="toggleUnit('${ex.id}')">LBS</button>
+        </div>
+      </div>
+      ${next ? `<div class="next-target">NEXT TARGET: <span class="next-val">${next} ${unit}</span></div>` : ""}
+    </div>
+  `;
+}
+
+function renderHistory(d) {
+  const hasHist = d.exercises.some(ex => (gymData[ex.id]?.history || []).length > 0);
+  if (!hasHist) return "";
+  return `
+    <div class="history-section">
+      <div class="history-title">History</div>
+      ${d.exercises.map(ex => {
+        const hist = gymData[ex.id]?.history || [];
+        if (!hist.length) return "";
+        const unit = getUnit(ex.id);
+        return `
+          <div class="history-item">
+            <div class="history-name">${ex.name}</div>
+            <div class="history-chips">
+              ${[...hist].reverse().slice(0, 6).map(h => `
+                <div class="chip">
+                  <span class="chip-weight">${h.weight} ${unit}</span>
+                  <span class="chip-date">${fmtDate(h.date)}</span>
+                </div>`).join("")}
+            </div>
+          </div>`;
+      }).join("")}
+    </div>`;
+}
+
+function fmtDate(iso) {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
+function switchDay(key) { activeDay = key; render(); }
+
+async function logSession(key) {
+  const d = PROGRAM[key];
+  const now = new Date().toISOString();
+  d.exercises.forEach(ex => {
+    const el = document.getElementById("input-" + ex.id);
+    if (!el) return;
+    const val = parseFloat(el.value);
+    if (isNaN(val)) return;
+    const prev = gymData[ex.id] || {};
+    const history = [...(prev.history || [])];
+    if (prev.current != null && prev.current !== val) history.push({ weight: prev.current, date: prev.lastUpdated });
+    gymData[ex.id] = { ...prev, current: val, lastUpdated: now, history };
+  });
+  saveLocal(gymData);
+
+  const btn = document.getElementById("save-btn-" + key);
+  if (ghConfig) {
+    btn.textContent = "SYNCING...";
+    setSyncUI("syncing", "Saving to GitHub...");
+    try {
+      ghSha = await ghSave(ghConfig, gymData, ghSha);
+      btn.textContent = "✓ SYNCED TO GITHUB";
+      btn.classList.add("saved");
+      setSyncUI("ok", "Synced · " + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
+    } catch(e) {
+      btn.textContent = "⚠ SYNC FAILED";
+      btn.classList.add("error");
+      setSyncUI("error", "Sync failed — saved locally");
+    }
+  } else {
+    btn.textContent = "✓ SAVED LOCALLY";
+    btn.classList.add("saved");
+  }
+  setTimeout(() => render(), 2000);
+}
+
+init();
+</script>
+</body>
+</html>
