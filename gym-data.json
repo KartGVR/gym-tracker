@@ -1,0 +1,148 @@
+{
+  "gymData": {},
+  "program": {
+    "A": {
+      "label": "Day A",
+      "day": "Monday",
+      "subtitle": "Push",
+      "color": "#e8572a",
+      "exercises": [
+        {
+          "id": "chest_press",
+          "name": "Chest Press Machine",
+          "sets": 3,
+          "reps": 5,
+          "type": "main"
+        },
+        {
+          "id": "shoulder_press",
+          "name": "Shoulder Press Machine",
+          "sets": 3,
+          "reps": 5,
+          "type": "main"
+        },
+        {
+          "id": "tricep_pushdown",
+          "name": "Cable Tricep Pushdown",
+          "sets": 3,
+          "reps": 12,
+          "type": "accessory"
+        },
+        {
+          "id": "lateral_raise",
+          "name": "Cable Lateral Raise",
+          "sets": 3,
+          "reps": 12,
+          "type": "accessory"
+        },
+        {
+          "id": "chest_fly",
+          "name": "Chest Fly Machine",
+          "sets": 3,
+          "reps": 12,
+          "type": "accessory"
+        }
+      ]
+    },
+    "B": {
+      "label": "Day B",
+      "day": "Wednesday",
+      "subtitle": "Pull + Legs",
+      "color": "#2a7be8",
+      "exercises": [
+        {
+          "id": "leg_press",
+          "name": "Leg Press",
+          "sets": 3,
+          "reps": 5,
+          "type": "main"
+        },
+        {
+          "id": "seated_row",
+          "name": "Seated Row",
+          "sets": 3,
+          "reps": 5,
+          "type": "main"
+        },
+        {
+          "id": "lat_pulldown",
+          "name": "Lat Pulldown",
+          "sets": 3,
+          "reps": 5,
+          "type": "main"
+        },
+        {
+          "id": "leg_curl",
+          "name": "Leg Curl",
+          "sets": 3,
+          "reps": 10,
+          "type": "accessory"
+        },
+        {
+          "id": "leg_extension",
+          "name": "Leg Extension",
+          "sets": 3,
+          "reps": 12,
+          "type": "accessory"
+        },
+        {
+          "id": "bicep_curl",
+          "name": "Cable Bicep Curl",
+          "sets": 3,
+          "reps": 12,
+          "type": "accessory"
+        }
+      ]
+    },
+    "C": {
+      "label": "Day C",
+      "day": "Friday",
+      "subtitle": "Full Body",
+      "color": "#2ae87a",
+      "exercises": [
+        {
+          "id": "chest_press_c",
+          "name": "Chest Press Machine",
+          "sets": 3,
+          "reps": 5,
+          "type": "main"
+        },
+        {
+          "id": "leg_press_c",
+          "name": "Leg Press",
+          "sets": 3,
+          "reps": 5,
+          "type": "main"
+        },
+        {
+          "id": "seated_row_c",
+          "name": "Seated Row",
+          "sets": 3,
+          "reps": 5,
+          "type": "main"
+        },
+        {
+          "id": "shoulder_press_c",
+          "name": "Shoulder Press Machine",
+          "sets": 3,
+          "reps": 10,
+          "type": "accessory"
+        },
+        {
+          "id": "rear_delt_fly",
+          "name": "Cable Rear Delt Fly",
+          "sets": 3,
+          "reps": 15,
+          "type": "accessory"
+        },
+        {
+          "id": "ab_crunch",
+          "name": "Ab Crunch Machine",
+          "sets": 3,
+          "reps": 15,
+          "type": "accessory"
+        }
+      ]
+    }
+  }
+}
