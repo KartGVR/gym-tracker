@@ -77,9 +77,40 @@
         }
       ],
       "pr": 25
+    },
+    "chest_press_c": {
+      "history": [
+        {
+          "sets": [
+            20,
+            20,
+            25
+          ],
+          "date": "2026-04-19T17:51:34.834Z"
+        }
+      ],
+      "pr": 25
     }
   },
   "sessions": [
+    {
+      "id": "ex_p81dlmd",
+      "dayKey": "C",
+      "dayLabel": "Day C",
+      "date": "2026-04-19T17:51:34.834Z",
+      "exercises": [
+        {
+          "exId": "chest_press_c",
+          "name": "Chest Press Machine",
+          "sets": [
+            20,
+            20,
+            25
+          ],
+          "unit": "kg"
+        }
+      ]
+    },
     {
       "id": "ex_k9omrtp",
       "dayKey": "B",
