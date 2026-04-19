@@ -1,5 +1,131 @@
 {
-  "gymData": {},
+  "gymData": {
+    "chest_press": {
+      "history": [
+        {
+          "sets": [
+            20,
+            20,
+            25
+          ],
+          "date": "2026-04-19T17:46:05.278Z"
+        }
+      ],
+      "pr": 25
+    },
+    "shoulder_press": {
+      "history": [
+        {
+          "sets": [
+            20,
+            20,
+            25
+          ],
+          "date": "2026-04-19T17:46:05.278Z"
+        }
+      ],
+      "pr": 25
+    },
+    "tricep_pushdown": {
+      "history": [
+        {
+          "sets": [
+            20,
+            20,
+            25
+          ],
+          "date": "2026-04-19T17:46:05.278Z"
+        }
+      ],
+      "pr": 25
+    },
+    "lateral_raise": {
+      "history": [
+        {
+          "sets": [
+            20,
+            20,
+            25
+          ],
+          "date": "2026-04-19T17:46:05.278Z"
+        }
+      ],
+      "pr": 25
+    },
+    "chest_fly": {
+      "history": [
+        {
+          "sets": [
+            20,
+            20,
+            25
+          ],
+          "date": "2026-04-19T17:46:05.278Z"
+        }
+      ],
+      "pr": 25
+    }
+  },
+  "sessions": [
+    {
+      "id": "ex_cty35t0",
+      "dayKey": "A",
+      "dayLabel": "Day A",
+      "date": "2026-04-19T17:46:05.278Z",
+      "exercises": [
+        {
+          "exId": "chest_press",
+          "name": "Chest Press Machine",
+          "sets": [
+            20,
+            20,
+            25
+          ],
+          "unit": "kg"
+        },
+        {
+          "exId": "shoulder_press",
+          "name": "Shoulder Press Machine",
+          "sets": [
+            20,
+            20,
+            25
+          ],
+          "unit": "kg"
+        },
+        {
+          "exId": "tricep_pushdown",
+          "name": "Cable Tricep Pushdown",
+          "sets": [
+            20,
+            20,
+            25
+          ],
+          "unit": "kg"
+        },
+        {
+          "exId": "lateral_raise",
+          "name": "Cable Lateral Raise",
+          "sets": [
+            20,
+            20,
+            25
+          ],
+          "unit": "kg"
+        },
+        {
+          "exId": "chest_fly",
+          "name": "Chest Fly Machine",
+          "sets": [
+            20,
+            20,
+            25
+          ],
+          "unit": "kg"
+        }
+      ]
+    }
+  ],
   "program": {
     "A": {
       "label": "Day A",
@@ -144,5 +270,6 @@
         }
       ]
     }
-  }
+  },
+  "units": {}
 }
