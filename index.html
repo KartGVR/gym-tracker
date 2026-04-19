@@ -8,15 +8,32 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: #0a0a0a; color: #e8e8e0; font-family: 'DM Mono','Courier New',monospace; min-height: 100vh; padding-bottom: 80px; }
-.header { background: #111; border-bottom: 1px solid #222; padding: 18px 16px 0; }
+
+/* Auth screen */
+#auth-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 40px 24px; text-align: center; }
+.auth-title { font-family: 'Bebas Neue',sans-serif; font-size: 48px; letter-spacing: 3px; margin-bottom: 8px; }
+.auth-sub { font-size: 11px; letter-spacing: 3px; color: #555; margin-bottom: 48px; text-transform: uppercase; }
+.google-btn { display: flex; align-items: center; gap: 12px; background: #fff; color: #1a1a1a; border: none; border-radius: 4px; padding: 14px 24px; font-family: 'DM Mono',monospace; font-size: 13px; letter-spacing: 1px; cursor: pointer; font-weight: 500; }
+.google-btn:active { background: #f0f0f0; }
+.google-btn svg { flex-shrink: 0; }
+
+/* App */
+#app-screen { display: none; }
+.header { background: #111; border-bottom: 1px solid #222; padding: 16px 16px 0; }
+.header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
 .header-sub { font-size: 10px; letter-spacing: 4px; color: #555; margin-bottom: 2px; text-transform: uppercase; }
-.header-title { font-family: 'Bebas Neue',sans-serif; font-size: 36px; letter-spacing: 2px; line-height: 1; margin-bottom: 14px; }
-.top-nav { display: flex; gap: 0; border-bottom: 1px solid #222; }
+.header-title { font-family: 'Bebas Neue',sans-serif; font-size: 34px; letter-spacing: 2px; line-height: 1; }
+.user-info { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.user-name { font-size: 10px; color: #555; letter-spacing: 1px; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.signout-btn { background: none; border: 1px solid #2a2a2a; color: #555; padding: 4px 8px; border-radius: 3px; font-family: 'DM Mono',monospace; font-size: 9px; letter-spacing: 1px; cursor: pointer; }
+.top-nav { display: flex; }
 .top-nav-btn { flex: 1; background: transparent; border: none; color: #555; font-family: 'Bebas Neue',sans-serif; font-size: 14px; letter-spacing: 2px; padding: 10px 4px; cursor: pointer; border-bottom: 2px solid transparent; }
 .top-nav-btn.active { color: #e8e8e0; border-bottom-color: #e8572a; }
 .day-tabs { display: flex; gap: 2px; overflow-x: auto; padding: 0 16px; background: #111; border-bottom: 1px solid #222; }
 .day-tab { background: transparent; color: #555; border: none; padding: 8px 12px; font-family: 'Bebas Neue',sans-serif; font-size: 13px; letter-spacing: 2px; cursor: pointer; border-radius: 4px 4px 0 0; white-space: nowrap; flex-shrink: 0; }
 .day-tab.active { color: #0a0a0a; }
+
+/* Status bar */
 .status-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: #0d0d0d; border-bottom: 1px solid #1a1a1a; gap: 8px; }
 .sync-wrap { display: flex; align-items: center; gap: 6px; color: #555; min-width: 0; }
 .sync-dot { width: 6px; height: 6px; border-radius: 50%; background: #555; flex-shrink: 0; }
@@ -25,11 +42,14 @@ body { background: #0a0a0a; color: #e8e8e0; font-family: 'DM Mono','Courier New'
 .sync-dot.error { background: #e8572a; }
 .sync-lbl { font-size: 10px; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-.bar-btns { display: flex; gap: 5px; flex-shrink: 0; }
 .bar-btn { background: none; border: 1px solid #2a2a2a; color: #555; padding: 4px 9px; border-radius: 3px; font-family: 'DM Mono',monospace; font-size: 10px; letter-spacing: 1px; cursor: pointer; }
 .bar-btn.ea { border-color: #f0c040; color: #f0c040; }
+
+/* Pages */
 .page { display: none; padding: 16px; }
 .page.active { display: block; }
+
+/* Exercise cards */
 .exercises { display: flex; flex-direction: column; gap: 10px; }
 .card { background: #111; border-radius: 4px; padding: 14px; border: 1px solid #1a1a1a; }
 .card.main { border-left: 3px solid var(--dc); border-color: #222; }
@@ -49,6 +69,8 @@ body { background: #0a0a0a; color: #e8e8e0; font-family: 'DM Mono','Courier New'
 .set-inp:focus { border-color: #555; }
 .set-prev { font-size: 10px; color: #444; }
 .set-best { color: #f0c040 !important; }
+
+/* Edit mode */
 .edit-card { background: #151515; border-radius: 4px; padding: 14px; border: 1px dashed #333; border-left: 3px solid #f0c040; display: flex; flex-direction: column; gap: 10px; }
 .edit-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .edit-inp { background: #0a0a0a; border: 1px solid #333; border-radius: 3px; color: #e8e8e0; font-family: 'DM Mono',monospace; font-size: 13px; padding: 7px 10px; outline: none; }
@@ -60,10 +82,12 @@ body { background: #0a0a0a; color: #e8e8e0; font-family: 'DM Mono','Courier New'
 .type-opt.active { background: #f0c040; color: #0a0a0a; }
 .del-btn { background: none; border: 1px solid #3a1a1a; color: #e8572a; border-radius: 3px; padding: 5px 8px; font-size: 12px; cursor: pointer; }
 .add-btn { margin-top: 10px; width: 100%; background: #111; border: 1px dashed #2a2a2a; border-radius: 4px; color: #555; padding: 11px; font-family: 'DM Mono',monospace; font-size: 11px; letter-spacing: 2px; cursor: pointer; }
-.log-btn { margin-top: 16px; width: 100%; background: var(--dc); color: #0a0a0a; border: none; border-radius: 4px; padding: 14px; font-family: 'Bebas Neue',sans-serif; font-size: 19px; letter-spacing: 3px; cursor: pointer; }
+.log-btn { margin-top: 16px; width: 100%; background: var(--dc); color: #0a0a0a; border: none; border-radius: 4px; padding: 14px; font-family: 'Bebas Neue',sans-serif; font-size: 19px; letter-spacing: 3px; cursor: pointer; transition: all 0.2s; }
 .log-btn.saved { background: #2ae87a; }
 .log-btn.err { background: #e8572a; }
 .save-edit-btn { margin-top: 10px; width: 100%; background: #f0c040; color: #0a0a0a; border: none; border-radius: 4px; padding: 12px; font-family: 'Bebas Neue',sans-serif; font-size: 17px; letter-spacing: 3px; cursor: pointer; }
+
+/* Sessions */
 .sess-list { display: flex; flex-direction: column; gap: 10px; }
 .sess-card { background: #111; border-radius: 4px; border: 1px solid #1a1a1a; overflow: hidden; }
 .sess-hdr { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; cursor: pointer; }
@@ -73,7 +97,7 @@ body { background: #0a0a0a; color: #e8e8e0; font-family: 'DM Mono','Courier New'
 .sess-body.open { display: block; }
 .sess-ex { margin-bottom: 14px; }
 .sess-ex-name { font-size: 13px; font-weight: 500; margin-bottom: 8px; }
-.sess-set-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 12px; }
+.sess-set-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
 .sess-set-lbl { color: #555; width: 36px; flex-shrink: 0; font-size: 10px; letter-spacing: 1px; }
 .sess-set-inp { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 3px; color: #e8e8e0; font-family: 'DM Mono',monospace; font-size: 13px; padding: 5px 8px; width: 68px; outline: none; -moz-appearance: textfield; }
 .sess-set-inp::-webkit-outer-spin-button,.sess-set-inp::-webkit-inner-spin-button { -webkit-appearance: none; }
@@ -82,68 +106,75 @@ body { background: #0a0a0a; color: #e8e8e0; font-family: 'DM Mono','Courier New'
 .sess-btn.sv { background: #2ae87a; color: #0a0a0a; }
 .sess-btn.dl { background: transparent; border: 1px solid #e8572a; color: #e8572a; }
 .empty { text-align: center; padding: 60px 20px; color: #444; font-size: 12px; letter-spacing: 2px; line-height: 2.2; }
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 100; align-items: flex-start; justify-content: center; padding: 32px 16px 60px; overflow-y: auto; }
-.modal-overlay.open { display: flex; }
-.modal { background: #111; border: 1px solid #2a2a2a; border-radius: 8px; width: 100%; max-width: 480px; padding: 22px; }
-.modal-title { font-family: 'Bebas Neue',sans-serif; font-size: 24px; letter-spacing: 2px; margin-bottom: 4px; }
-.modal-sub { font-size: 11px; color: #666; line-height: 1.7; margin-bottom: 18px; }
-.fl { font-size: 10px; letter-spacing: 3px; color: #555; text-transform: uppercase; margin-bottom: 5px; margin-top: 14px; }
-.fi { width: 100%; background: #0a0a0a; border: 1px solid #2a2a2a; border-radius: 3px; color: #e8e8e0; font-family: 'DM Mono',monospace; font-size: 14px; padding: 9px 12px; outline: none; }
-.fi:focus { border-color: #555; }
-.fh { font-size: 10px; color: #444; margin-top: 4px; line-height: 1.6; }
-.divider { border: none; border-top: 1px solid #1a1a1a; margin: 18px 0; }
-.mbtns { display: flex; gap: 8px; margin-top: 16px; }
-.mbtn { flex: 1; padding: 12px; border: none; border-radius: 4px; font-family: 'Bebas Neue',sans-serif; font-size: 16px; letter-spacing: 2px; cursor: pointer; }
-.mbtn.ok { background: #2ae87a; color: #0a0a0a; }
-.mbtn.cancel { background: #1a1a1a; color: #888; }
-.mbtn.danger { background: transparent; color: #e8572a; border: 1px solid #e8572a; margin-top: 6px; }
+.loading { text-align: center; padding: 60px 20px; color: #444; font-size: 12px; letter-spacing: 3px; }
 </style>
 </head>
 <body>
-<div class="header">
-  <div class="header-sub">Strength + Aesthetics</div>
-  <div class="header-title">YOUR PROGRAM</div>
-  <div class="top-nav">
-    <button class="top-nav-btn active" onclick="showPage('log')">LOG</button>
-    <button class="top-nav-btn" onclick="showPage('sessions')">SESSIONS</button>
-  </div>
-</div>
-<div class="status-bar">
-  <div class="sync-wrap">
-    <div class="sync-dot" id="sdot"></div>
-    <span class="sync-lbl" id="slbl">Not connected</span>
-  </div>
-  <div class="bar-btns">
-    <button class="bar-btn" id="edit-btn" onclick="toggleEdit()">&#9998; EDIT</button>
-    <button class="bar-btn" onclick="openGH()">&#9881; GITHUB</button>
-  </div>
-</div>
-<div class="modal-overlay" id="gh-modal">
-  <div class="modal">
-    <div class="modal-title">GitHub Sync</div>
-    <div class="modal-sub">Your data saves as a JSON file in your GitHub repo — accessible from any device.</div>
-    <div class="fl">GitHub Username</div>
-    <input class="fi" id="gh-u" placeholder="e.g. johndoe" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
-    <div class="fl">Repository Name</div>
-    <input class="fi" id="gh-r" placeholder="e.g. gym-tracker" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
-    <div class="fh">Create a repo on github.com first (can be private).</div>
-    <div class="fl">Personal Access Token</div>
-    <input class="fi" id="gh-t" type="password" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off" spellcheck="false">
-    <div class="fh">GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate. Check <strong>repo</strong> scope.</div>
-    <hr class="divider">
-    <div class="mbtns">
-      <button class="mbtn cancel" onclick="closeGH()">CANCEL</button>
-      <button class="mbtn ok" onclick="connectGH()">CONNECT</button>
-    </div>
-    <div class="mbtns"><button class="mbtn danger" onclick="disconnectGH()">DISCONNECT GITHUB</button></div>
-  </div>
-</div>
-<div id="day-tabs-bar" class="day-tabs"></div>
-<div class="page active" id="page-log"></div>
-<div class="page" id="page-sessions"></div>
 
-<script>
-const DP={
+<!-- Auth screen -->
+<div id="auth-screen">
+  <div class="auth-title">YOUR PROGRAM</div>
+  <div class="auth-sub">Strength + Aesthetics Tracker</div>
+  <button class="google-btn" onclick="signIn()">
+    <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.347 6.175 0 7.55 0 9s.348 2.825.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/></svg>
+    Sign in with Google
+  </button>
+</div>
+
+<!-- App screen -->
+<div id="app-screen">
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="header-sub">Strength + Aesthetics</div>
+        <div class="header-title">YOUR PROGRAM</div>
+      </div>
+      <div class="user-info">
+        <span class="user-name" id="user-name"></span>
+        <button class="signout-btn" onclick="signOut()">SIGN OUT</button>
+      </div>
+    </div>
+    <div class="top-nav">
+      <button class="top-nav-btn active" onclick="showPage('log')">LOG</button>
+      <button class="top-nav-btn" onclick="showPage('sessions')">SESSIONS</button>
+    </div>
+  </div>
+  <div class="status-bar">
+    <div class="sync-wrap">
+      <div class="sync-dot ok" id="sdot"></div>
+      <span class="sync-lbl" id="slbl">Connected to Firebase</span>
+    </div>
+    <button class="bar-btn" id="edit-btn" onclick="toggleEdit()">&#9998; EDIT</button>
+  </div>
+  <div id="day-tabs-bar" class="day-tabs"></div>
+  <div class="page active" id="page-log"></div>
+  <div class="page" id="page-sessions"></div>
+</div>
+
+<!-- Firebase SDKs -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut as fbSignOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, collection, addDoc, getDocs, updateDoc, deleteDoc, query, orderBy }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCSWTDuJxO9RIut4MEcmQ0T3i0ZJIabm_o",
+  authDomain: "gym-tracker-6abb9.firebaseapp.com",
+  projectId: "gym-tracker-6abb9",
+  storageBucket: "gym-tracker-6abb9.firebasestorage.app",
+  messagingSenderId: "67734792736",
+  appId: "1:67734792736:web:29d4debf01aadf8f30ea45"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+const provider = new GoogleAuthProvider();
+
+// ── Default program ────────────────────────────────────────────────────────
+const DEFAULT_PROGRAM = {
   A:{label:"Day A",day:"Mon",subtitle:"Push",color:"#e8572a",exercises:[
     {id:"chest_press",name:"Chest Press Machine",sets:3,reps:5,type:"main"},
     {id:"shoulder_press",name:"Shoulder Press Machine",sets:3,reps:5,type:"main"},
@@ -168,165 +199,170 @@ const DP={
     {id:"ab_crunch",name:"Ab Crunch Machine",sets:3,reps:15,type:"accessory"},
   ]},
 };
-const KD="gv4d",KP="gv4p",KU="gv4u",KS="gv4s",KG="gv4g",GF="gym-data.json";
-const ld=(k,fb)=>{try{return JSON.parse(localStorage.getItem(k))||fb;}catch{return fb;}};
-const sv=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
-const gid=()=>"ex_"+Math.random().toString(36).slice(2,9);
-const fmtD=iso=>iso?new Date(iso).toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"}):"—";
-const fmtT=iso=>iso?new Date(iso).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}):"";
 
-async function ghReq(cfg,method,body){
-  return fetch(`https://api.github.com/repos/${cfg.u}/${cfg.r}/contents/${GF}`,{
-    method,headers:{Authorization:`token ${cfg.t}`,"Content-Type":"application/json",Accept:"application/vnd.github.v3+json"},
-    body:body?JSON.stringify(body):undefined});
-}
-async function ghLd(cfg){
-  const r=await ghReq(cfg,"GET");
-  if(r.status===404)return{gymData:{},sessions:[],program:null,units:{},sha:null};
-  if(!r.ok)throw new Error("GH "+r.status);
-  const j=await r.json();
-  const p=JSON.parse(atob(j.content.replace(/\n/g,"")));
-  return{gymData:p.gymData||{},sessions:p.sessions||[],program:p.program||null,units:p.units||{},sha:j.sha};
-}
-async function ghSv(cfg,sha){
-  const content=btoa(unescape(encodeURIComponent(JSON.stringify({gymData,sessions,program,units},null,2))));
-  const r=await ghReq(cfg,"PUT",{message:"Gym "+new Date().toISOString().slice(0,10),content,...(sha?{sha}:{})});
-  if(!r.ok){const e=await r.json();throw new Error(e.message||"fail");}
-  return(await r.json()).content.sha;
-}
+// ── Helpers ────────────────────────────────────────────────────────────────
+const gid  = () => "ex_"+Math.random().toString(36).slice(2,9);
+const fmtD = iso => iso ? new Date(iso).toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"}) : "—";
+const fmtT = iso => iso ? new Date(iso).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}) : "";
 
-let activePage="log",activeDay="A",editMode=false;
-let gymData=ld(KD,{}),sessions=ld(KS,[]),program=ld(KP,DP),units=ld(KU,{}),ghConfig=ld(KG,null),ghSha=null;
+// ── State ──────────────────────────────────────────────────────────────────
+let uid, activePage="log", activeDay="A", editMode=false;
+let program=JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
+let gymData={}, sessions=[], units={};
 
-function setSUI(state,label){
-  const d=document.getElementById("sdot"),l=document.getElementById("slbl");
-  if(d)d.className="sync-dot"+(state?" "+state:"");
-  if(l)l.textContent=label;
-}
+// ── Firestore paths ────────────────────────────────────────────────────────
+const progRef  = () => doc(db,`users/${uid}/data/program`);
+const gymRef   = () => doc(db,`users/${uid}/data/gymData`);
+const unitsRef = () => doc(db,`users/${uid}/data/units`);
+const sessCol  = () => collection(db,`users/${uid}/sessions`);
+const sessDoc  = (id) => doc(db,`users/${uid}/sessions/${id}`);
 
-async function init(){
-  render();
-  if(!ghConfig){setSUI("","Not connected — tap \u2699 GITHUB");return;}
-  setSUI("syncing","Syncing...");
-  try{
-    const r=await ghLd(ghConfig);ghSha=r.sha;
-    if(r.program){program=r.program;sv(KP,program);}
-    if(Object.keys(r.gymData).length){gymData=r.gymData;sv(KD,gymData);}
-    if(r.sessions.length){sessions=r.sessions;sv(KS,sessions);}
-    if(Object.keys(r.units).length){units=r.units;sv(KU,units);}
-    setSUI("ok","Synced with GitHub");render();
-  }catch(e){setSUI("error","Sync failed — using local data");}
-}
+// ── Auth ───────────────────────────────────────────────────────────────────
+window.signIn = async () => {
+  try { await signInWithPopup(auth, provider); }
+  catch(e) { alert("Sign-in failed: "+e.message); }
+};
+window.signOut = async () => {
+  if(!confirm("Sign out?")) return;
+  await fbSignOut(auth);
+};
 
-function openGH(){
-  const c=ld(KG,{});
-  document.getElementById("gh-u").value=c.u||"";
-  document.getElementById("gh-r").value=c.r||"";
-  document.getElementById("gh-t").value=c.t||"";
-  document.getElementById("gh-modal").classList.add("open");
-}
-function closeGH(){document.getElementById("gh-modal").classList.remove("open");}
-async function connectGH(){
-  const u=document.getElementById("gh-u").value.trim();
-  const r=document.getElementById("gh-r").value.trim();
-  const t=document.getElementById("gh-t").value.trim();
-  if(!u||!r||!t){alert("Fill in all fields.");return;}
-  const cfg={u,r,t};sv(KG,cfg);ghConfig=cfg;closeGH();
-  setSUI("syncing","Connecting...");
-  try{
-    const res=await ghLd(cfg);ghSha=res.sha;
-    if(res.program){program=res.program;sv(KP,program);}
-    if(Object.keys(res.gymData).length){gymData=res.gymData;sv(KD,gymData);}
-    if(res.sessions.length){sessions=res.sessions;sv(KS,sessions);}
-    if(!res.sha)ghSha=await ghSv(cfg,null);
-    setSUI("ok","Connected!");render();
-  }catch(e){setSUI("error","Connection failed — check details");}
-}
-function disconnectGH(){
-  if(!confirm("Disconnect GitHub?"))return;
-  localStorage.removeItem(KG);ghConfig=null;ghSha=null;
-  closeGH();setSUI("","Not connected — tap \u2699 GITHUB");
+onAuthStateChanged(auth, async user => {
+  if(user) {
+    uid = user.uid;
+    document.getElementById("auth-screen").style.display = "none";
+    document.getElementById("app-screen").style.display  = "block";
+    document.getElementById("user-name").textContent = user.displayName||user.email||"";
+    setSUI("syncing","Loading your data...");
+    await loadAll();
+    setSUI("ok","Synced with Firebase");
+    render();
+  } else {
+    uid = null;
+    document.getElementById("auth-screen").style.display = "flex";
+    document.getElementById("app-screen").style.display  = "none";
+  }
+});
+
+// ── Load all data ──────────────────────────────────────────────────────────
+async function loadAll() {
+  try {
+    const [pd, gd, ud] = await Promise.all([getDoc(progRef()), getDoc(gymRef()), getDoc(unitsRef())]);
+    if(pd.exists()) program  = pd.data().value;
+    if(gd.exists()) gymData  = gd.data().value;
+    if(ud.exists()) units    = ud.data().value;
+    const sq = await getDocs(query(sessCol(), orderBy("date","desc")));
+    sessions = sq.docs.map(d=>({id:d.id,...d.data()}));
+  } catch(e) { setSUI("error","Load failed — "+e.message); }
 }
 
-function showPage(p){
+// ── Save helpers ───────────────────────────────────────────────────────────
+async function saveProgram()  { await setDoc(progRef(),  {value:program}); }
+async function saveGymData()  { await setDoc(gymRef(),   {value:gymData}); }
+async function saveUnits()    { await setDoc(unitsRef(), {value:units}); }
+async function addSession(s)  {
+  const ref = await addDoc(sessCol(), s);
+  return ref.id;
+}
+async function updateSession(id, data) { await updateDoc(sessDoc(id), data); }
+async function removeSession(id)       { await deleteDoc(sessDoc(id)); }
+
+// ── Sync UI ────────────────────────────────────────────────────────────────
+function setSUI(state, label) {
+  const d=document.getElementById("sdot"), l=document.getElementById("slbl");
+  if(d) d.className="sync-dot"+(state?" "+state:"");
+  if(l) l.textContent=label;
+}
+
+// ── Page nav ───────────────────────────────────────────────────────────────
+window.showPage = p => {
   activePage=p;
   document.querySelectorAll(".top-nav-btn").forEach((b,i)=>b.classList.toggle("active",["log","sessions"][i]===p));
   document.getElementById("day-tabs-bar").style.display=p==="log"?"flex":"none";
   document.getElementById("page-log").classList.toggle("active",p==="log");
   document.getElementById("page-sessions").classList.toggle("active",p==="sessions");
-  if(p==="sessions")renderSessions();
-}
+  if(p==="sessions") renderSessions();
+};
 
-function switchDay(key){if(editMode)collectEdits();activeDay=key;renderDayTabs();renderLog();}
+window.switchDay = key => {
+  if(editMode) collectEdits();
+  activeDay=key; renderDayTabs(); renderLog();
+};
 
-function toggleEdit(){
-  if(editMode)collectEdits();
+// ── Edit mode ──────────────────────────────────────────────────────────────
+window.toggleEdit = () => {
+  if(editMode) collectEdits();
   editMode=!editMode;
   const b=document.getElementById("edit-btn");
-  b.textContent=editMode?"\u2713 DONE":"\u270e EDIT";
+  b.textContent=editMode?"✓ DONE":"✎ EDIT";
   b.classList.toggle("ea",editMode);
   renderLog();
-}
-function collectEdits(){
-  const d=program[activeDay];
-  d.exercises.forEach((ex,i)=>{
+};
+function collectEdits() {
+  program[activeDay].exercises.forEach((ex,i)=>{
     const n=document.getElementById("en-"+i),s=document.getElementById("es-"+i),r=document.getElementById("er-"+i);
-    if(n)ex.name=n.value.trim()||ex.name;
-    if(s)ex.sets=parseInt(s.value)||ex.sets;
-    if(r)ex.reps=parseInt(r.value)||ex.reps;
+    if(n) ex.name=n.value.trim()||ex.name;
+    if(s) ex.sets=parseInt(s.value)||ex.sets;
+    if(r) ex.reps=parseInt(r.value)||ex.reps;
   });
-  sv(KP,program);
 }
-function setExType(dk,idx,type){collectEdits();program[dk].exercises[idx].type=type;sv(KP,program);renderLog();}
-function delEx(dk,idx){if(!confirm("Delete exercise?"))return;collectEdits();program[dk].exercises.splice(idx,1);sv(KP,program);renderLog();}
-function addEx(dk){
+window.setExType = (dk,idx,type) => { collectEdits(); program[dk].exercises[idx].type=type; renderLog(); };
+window.delEx = (dk,idx) => {
+  if(!confirm("Delete exercise?")) return;
+  collectEdits(); program[dk].exercises.splice(idx,1); renderLog();
+};
+window.addEx = dk => {
   collectEdits();
   program[dk].exercises.push({id:gid(),name:"New Exercise",sets:3,reps:10,type:"accessory"});
-  sv(KP,program);renderLog();
-  setTimeout(()=>{const el=document.getElementById("en-"+(program[dk].exercises.length-1));if(el){el.focus();el.select();}},60);
-}
-async function saveEdits(){
-  collectEdits();editMode=false;
-  const b=document.getElementById("edit-btn");b.textContent="\u270e EDIT";b.classList.remove("ea");
   renderLog();
-  if(ghConfig){setSUI("syncing","Saving...");try{ghSha=await ghSv(ghConfig,ghSha);setSUI("ok","Saved");}catch(e){setSUI("error","Sync failed");}}
-}
+  setTimeout(()=>{ const el=document.getElementById("en-"+(program[dk].exercises.length-1)); if(el){el.focus();el.select();} },60);
+};
+window.saveEdits = async () => {
+  collectEdits(); editMode=false;
+  const b=document.getElementById("edit-btn"); b.textContent="✎ EDIT"; b.classList.remove("ea");
+  renderLog();
+  setSUI("syncing","Saving program...");
+  try { await saveProgram(); setSUI("ok","Program saved"); }
+  catch(e) { setSUI("error","Save failed"); }
+};
 
-function render(){renderDayTabs();renderLog();}
-function renderDayTabs(){
+// ── Render ─────────────────────────────────────────────────────────────────
+function render() { renderDayTabs(); renderLog(); }
+
+function renderDayTabs() {
   document.getElementById("day-tabs-bar").innerHTML=Object.entries(program).map(([k,d])=>`
     <button class="day-tab ${k===activeDay?"active":""}" style="${k===activeDay?"background:"+d.color:""}" onclick="switchDay('${k}')">
       ${d.label}
     </button>`).join("");
 }
 
-function getUnit(id){return units[id]||"kg";}
-function togUnit(id){units[id]=getUnit(id)==="kg"?"lbs":"kg";sv(KU,units);renderLog();}
-function getPR(id){
+window.togUnit = id => { units[id]=getUnit(id)==="kg"?"lbs":"kg"; saveUnits(); renderLog(); };
+
+function getUnit(id) { return units[id]||"kg"; }
+function getPR(id) {
   let best=null;
-  (gymData[id]?.history||[]).forEach(h=>(h.sets||[]).forEach(w=>{if(w!=null&&(best===null||w>best))best=w;}));
+  (gymData[id]?.history||[]).forEach(h=>(h.sets||[]).forEach(w=>{ if(w!=null&&(best===null||w>best)) best=w; }));
   return best;
 }
-function getLastSets(id){
-  const h=gymData[id]?.history||[];
-  return h.length?(h[h.length-1].sets||null):null;
+function getLastSets(id) {
+  const h=gymData[id]?.history||[]; return h.length?(h[h.length-1].sets||null):null;
 }
 
-function renderLog(){
-  const d=program[activeDay],c=d.color;
+function renderLog() {
+  const d=program[activeDay], c=d.color;
   document.getElementById("page-log").style.cssText=`--dc:${c}`;
-  document.getElementById("page-log").innerHTML=editMode?renderEditMode(d):renderLogMode(d,c);
+  document.getElementById("page-log").innerHTML = editMode ? renderEditMode(d) : renderLogMode(d,c);
 }
 
-function renderLogMode(d,c){
-  return`<div class="exercises">${d.exercises.map(ex=>renderLogCard(ex,c)).join("")}</div>
+function renderLogMode(d,c) {
+  return `<div class="exercises">${d.exercises.map(ex=>renderLogCard(ex,c)).join("")}</div>
   <button class="log-btn" id="log-btn" onclick="logSession('${activeDay}')">LOG SESSION</button>`;
 }
-function renderEditMode(d){
-  return`<div class="exercises">${d.exercises.map((ex,i)=>`
+function renderEditMode(d) {
+  return `<div class="exercises">${d.exercises.map((ex,i)=>`
     <div class="edit-card">
       <div class="edit-row">
-        <input class="edit-inp n" id="en-${i}" value="${ex.name}" placeholder="Exercise name" spellcheck="false">
+        <input class="edit-inp n" id="en-${i}" value="${ex.name}" spellcheck="false">
       </div>
       <div class="edit-row">
         <span class="edit-lbl">SETS</span>
@@ -344,24 +380,21 @@ function renderEditMode(d){
   <button class="save-edit-btn" onclick="saveEdits()">SAVE CHANGES</button>`;
 }
 
-function renderLogCard(ex,c){
-  const unit=getUnit(ex.id),pr=getPR(ex.id),last=getLastSets(ex.id),isMain=ex.type==="main";
+function renderLogCard(ex,c) {
+  const unit=getUnit(ex.id), pr=getPR(ex.id), last=getLastSets(ex.id), isMain=ex.type==="main";
   let rows="";
   for(let i=0;i<ex.sets;i++){
-    const prev=last?last[i]:null;
-    const isBest=pr!=null&&prev!=null&&prev===pr;
+    const prev=last?last[i]:null, isBest=pr!=null&&prev!=null&&prev===pr;
     rows+=`<div class="set-row">
       <span class="set-lbl">SET ${i+1}</span>
       <input class="set-inp" type="number" id="si-${ex.id}-${i}" placeholder="${prev??""}" inputmode="decimal">
-      ${prev!=null?`<span class="set-prev ${isBest?"set-best":""}">${prev}${unit} ${isBest?"★":""}</span>`:""}
+      ${prev!=null?`<span class="set-prev ${isBest?"set-best":""}">${prev}${unit}${isBest?" ★":""}</span>`:""}
     </div>`;
   }
-  return`<div class="card ${isMain?"main":"acc"}" style="--dc:${c}">
+  return `<div class="card ${isMain?"main":"acc"}" style="--dc:${c}">
     <div class="card-hdr">
-      <div>
-        <div class="card-name">${ex.name}</div>
-        <div class="card-meta">${ex.sets}&times;${ex.reps} &middot; ${isMain?"MAIN":"ACCESSORY"}</div>
-      </div>
+      <div><div class="card-name">${ex.name}</div>
+        <div class="card-meta">${ex.sets}&times;${ex.reps} &middot; ${isMain?"MAIN":"ACCESSORY"}</div></div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
         ${pr!=null?`<span class="card-pr">PR ${pr}${unit}</span>`:""}
         <div class="unit-tog">
@@ -374,45 +407,54 @@ function renderLogCard(ex,c){
   </div>`;
 }
 
-async function logSession(dk){
-  const d=program[dk],now=new Date().toISOString();
-  const sexs=[];let anyLogged=false;
+// ── Log session ────────────────────────────────────────────────────────────
+window.logSession = async dk => {
+  const d=program[dk], now=new Date().toISOString();
+  const sexs=[]; let anyLogged=false;
   d.exercises.forEach(ex=>{
-    const sw=[];let logged=false;
+    const sw=[]; let logged=false;
     for(let i=0;i<ex.sets;i++){
       const el=document.getElementById(`si-${ex.id}-${i}`);
       const val=el?parseFloat(el.value):NaN;
       sw.push(isNaN(val)?null:val);
-      if(!isNaN(val))logged=true;
+      if(!isNaN(val)) logged=true;
     }
     if(logged){
       anyLogged=true;
-      if(!gymData[ex.id])gymData[ex.id]={history:[]};
+      if(!gymData[ex.id]) gymData[ex.id]={history:[]};
       gymData[ex.id].history.push({sets:sw,date:now});
       const valid=sw.filter(w=>w!=null);
       const mx=valid.length?Math.max(...valid):null;
-      if(mx!=null&&(gymData[ex.id].pr==null||mx>gymData[ex.id].pr))gymData[ex.id].pr=mx;
+      if(mx!=null&&(gymData[ex.id].pr==null||mx>gymData[ex.id].pr)) gymData[ex.id].pr=mx;
       sexs.push({exId:ex.id,name:ex.name,sets:sw,unit:getUnit(ex.id)});
     }
   });
   if(!anyLogged){alert("Enter at least one weight first.");return;}
-  sessions.unshift({id:gid(),dayKey:dk,dayLabel:d.label,date:now,exercises:sexs});
-  sv(KD,gymData);sv(KS,sessions);
+  const sessionData={dayKey:dk,dayLabel:d.label,date:now,exercises:sexs};
   const btn=document.getElementById("log-btn");
-  if(ghConfig){
-    btn.textContent="SYNCING...";setSUI("syncing","Saving...");
-    try{ghSha=await ghSv(ghConfig,ghSha);btn.textContent="\u2713 SYNCED";btn.classList.add("saved");setSUI("ok","Synced \u00b7 "+fmtT(now));}
-    catch(e){btn.textContent="\u26a0 SYNC FAILED";btn.classList.add("err");setSUI("error","Sync failed — saved locally");}
-  }else{btn.textContent="\u2713 SAVED";btn.classList.add("saved");}
-  setTimeout(()=>renderLog(),2000);
-}
+  btn.textContent="SAVING..."; setSUI("syncing","Saving...");
+  try {
+    const newId = await addSession(sessionData);
+    sessions.unshift({id:newId,...sessionData});
+    await saveGymData();
+    btn.textContent="✓ SYNCED"; btn.classList.add("saved");
+    setSUI("ok","Synced · "+fmtT(now));
+  } catch(e) {
+    btn.textContent="⚠ FAILED"; btn.classList.add("err");
+    setSUI("error","Save failed — "+e.message);
+  }
+  setTimeout(()=>renderLog(), 2000);
+};
 
-function renderSessions(){
+// ── Sessions page ──────────────────────────────────────────────────────────
+function renderSessions() {
   const el=document.getElementById("page-sessions");
-  if(!sessions.length){el.innerHTML=`<div class="empty">NO SESSIONS YET<br>LOG YOUR FIRST SESSION ON THE LOG TAB</div>`;return;}
-  el.innerHTML=`<div class="sess-list">${sessions.map((s,si)=>{
+  if(!sessions.length){
+    el.innerHTML=`<div class="empty">NO SESSIONS YET<br>LOG YOUR FIRST SESSION ON THE LOG TAB</div>`;return;
+  }
+  el.innerHTML=`<div class="sess-list">${sessions.map(s=>{
     const dc=(program[s.dayKey]||{color:"#555"}).color;
-    return`<div class="sess-card">
+    return `<div class="sess-card">
       <div class="sess-hdr" onclick="togSess('${s.id}')">
         <div>
           <div class="sess-date" style="color:${dc}">${fmtD(s.date)}</div>
@@ -440,52 +482,57 @@ function renderSessions(){
   }).join("")}</div>`;
 }
 
-function togSess(id){
-  const b=document.getElementById("sb-"+id),a=document.getElementById("sa-"+id);
-  const o=b.classList.toggle("open");if(a)a.innerHTML=o?"&#9650;":"&#9660;";
-}
+window.togSess = id => {
+  const b=document.getElementById("sb-"+id), a=document.getElementById("sa-"+id);
+  const o=b.classList.toggle("open"); if(a) a.innerHTML=o?"&#9650;":"&#9660;";
+};
 
-function saveSessionEdit(id){
-  const si=sessions.findIndex(s=>s.id===id);if(si<0)return;
+window.saveSessionEdit = async id => {
+  const si=sessions.findIndex(s=>s.id===id); if(si<0) return;
   const s=sessions[si];
   s.exercises.forEach((ex,ei)=>{
     ex.sets=(ex.sets||[]).map((_,wi)=>{
       const el=document.getElementById(`sse-${id}-${ei}-${wi}`);
-      const val=el?parseFloat(el.value):NaN;return isNaN(val)?null:val;
+      const val=el?parseFloat(el.value):NaN; return isNaN(val)?null:val;
     });
   });
   // Recalc PRs
   s.exercises.forEach(ex=>{
-    if(!gymData[ex.exId])return;
+    if(!gymData[ex.exId]) return;
     let best=null;
-    gymData[ex.exId].history.forEach(h=>(h.sets||[]).forEach(w=>{if(w!=null&&(best===null||w>best))best=w;}));
+    gymData[ex.exId].history.forEach(h=>(h.sets||[]).forEach(w=>{ if(w!=null&&(best===null||w>best)) best=w; }));
     gymData[ex.exId].pr=best;
   });
-  sv(KD,gymData);sv(KS,sessions);syncNow();renderSessions();
-}
+  setSUI("syncing","Saving...");
+  try {
+    await updateSession(id,{exercises:s.exercises});
+    await saveGymData();
+    setSUI("ok","Saved · "+fmtT(new Date().toISOString()));
+    renderSessions();
+  } catch(e) { setSUI("error","Save failed"); }
+};
 
-function delSession(id){
-  if(!confirm("Delete this session?"))return;
-  const si=sessions.findIndex(s=>s.id===id);if(si<0)return;
+window.delSession = async id => {
+  if(!confirm("Delete this session?")) return;
+  const si=sessions.findIndex(s=>s.id===id); if(si<0) return;
   const s=sessions[si];
   s.exercises.forEach(ex=>{
-    if(!gymData[ex.exId])return;
+    if(!gymData[ex.exId]) return;
     gymData[ex.exId].history=gymData[ex.exId].history.filter(h=>h.date!==s.date);
     let best=null;
-    gymData[ex.exId].history.forEach(h=>(h.sets||[]).forEach(w=>{if(w!=null&&(best===null||w>best))best=w;}));
+    gymData[ex.exId].history.forEach(h=>(h.sets||[]).forEach(w=>{ if(w!=null&&(best===null||w>best)) best=w; }));
     gymData[ex.exId].pr=best;
   });
-  sessions.splice(si,1);sv(KD,gymData);sv(KS,sessions);syncNow();renderSessions();
-}
+  sessions.splice(si,1);
+  setSUI("syncing","Deleting...");
+  try {
+    await removeSession(id);
+    await saveGymData();
+    setSUI("ok","Deleted");
+    renderSessions();
+  } catch(e) { setSUI("error","Delete failed"); }
+};
 
-async function syncNow(){
-  if(!ghConfig)return;
-  setSUI("syncing","Saving...");
-  try{ghSha=await ghSv(ghConfig,ghSha);setSUI("ok","Synced \u00b7 "+fmtT(new Date().toISOString()));}
-  catch(e){setSUI("error","Sync failed — saved locally");}
-}
-
-init();
 </script>
 </body>
 </html>
