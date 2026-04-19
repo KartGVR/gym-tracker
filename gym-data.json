@@ -64,9 +64,40 @@
         }
       ],
       "pr": 25
+    },
+    "leg_press": {
+      "history": [
+        {
+          "sets": [
+            25,
+            25,
+            25
+          ],
+          "date": "2026-04-19T17:50:58.872Z"
+        }
+      ],
+      "pr": 25
     }
   },
   "sessions": [
+    {
+      "id": "ex_k9omrtp",
+      "dayKey": "B",
+      "dayLabel": "Day B",
+      "date": "2026-04-19T17:50:58.872Z",
+      "exercises": [
+        {
+          "exId": "leg_press",
+          "name": "Leg Press",
+          "sets": [
+            25,
+            25,
+            25
+          ],
+          "unit": "kg"
+        }
+      ]
+    },
     {
       "id": "ex_cty35t0",
       "dayKey": "A",
